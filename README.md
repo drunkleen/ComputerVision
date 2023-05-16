@@ -26,17 +26,25 @@ The [PoseEstimationModule](modules%2FPoseEstimationModule.py) is responsible for
 
 The [HandVoumeControler](HandVoumeControler.py) application is an example application that showcases the use of the [HandTrackingModule](modules%2FHandTrackingModule.py) module to control the system's volume using hand gestures. It detects the hand, tracks the hand movement, recognizes specific gestures, and adjusts the system volume accordingly.
 
+<img src="sources/HandVolumeControl.jpg"  width="500" height="400" />
+
+## FuckDetector App
+
+The [FuckDetector](FuckDetector.py) application is annother example application that showcases the use of the [HandTrackingModule](modules%2FHandTrackingModule.py) module to detect fingers and alert if someone shows the camera a middle finger. It detects the hand, tracks the hand movement..
+
+<img src="sources/fuck_detection.png"  width="500" height="400" />
+
 ## Getting Started
 
 To get started with this project, follow these steps:
 
 1. Clone the repository to your local machine.
 
-       `git clone https://github.com/drunkleen/ComputerVision`
+       git clone https://github.com/drunkleen/ComputerVision
 
 2. Install the required dependencies by running
 
-       `pip install -r requirements.txt`.
+       pip install -r requirements.txt
 
 3. Explore the documentation of [Mediapipe](https://mediapipe.dev/) and examples provided for each module (will be added soon).
 4. Customize and extend the modules or develop your own application based on the modules provided.
