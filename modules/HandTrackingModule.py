@@ -44,10 +44,13 @@ class HandDetector:
                 self.lmList.append([id, cx, cy])
 
         if draw:
-            if len(points) != 0 and points != None and len(self.lmList) != 0:
-                for point in points:
-                    cv2.circle(vid, (self.lmList[point][1], self.lmList[point][2]),
-                               5, (0, 255, 0), -1)
+            if points != None:
+                if len(points) != 0 and len(self.lmList) != 0:
+                    for point in points:
+                        cv2.circle(
+                            vid, (self.lmList[point][1],
+                                  self.lmList[point][2]),
+                            5, (0, 255, 0), -1)
         return self.lmList
 
 
