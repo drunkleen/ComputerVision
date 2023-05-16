@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import time
 
+
 class HandDetector:
     def __init__(self, mode=False, MaxHands=2, detectionCon=0.5, trackCon=0.5):
 
@@ -31,7 +32,7 @@ class HandDetector:
                     self.mpDraw.draw_landmarks(vid, handLms, self.mpHands.HAND_CONNECTIONS)
         return vid
 
-    def find_position(self, vid, handNo=0, draw=True, points:list=None):
+    def find_position(self, vid, handNo=0, draw=True, points: list = None):
         self.lmList = []
         if self.results.multi_hand_landmarks:
             activeHand = self.results.multi_hand_landmarks[handNo]
@@ -50,8 +51,6 @@ class HandDetector:
         return self.lmList
 
 
-
-
 def main():
     pTime = 0
     cTime = 0
@@ -63,7 +62,6 @@ def main():
         vid = detector.find_hands(vid=vid, draw=True)
         lmList = detector.find_position(vid=vid, draw=True, points=[4, 3])
         print(lmList[4:2:-1])
-
 
         # FPS
         cTime = time.time()
