@@ -2,17 +2,36 @@ import cv2
 import time
 import math
 import numpy as np
+import platform
+import subprocess
 from modules.HandTrackingModule import HandDetector
-from ctypes import POINTER, cast
-from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+
+os = platform.system()
+if os == 'Linux':
+    import subprocess
+elif os == 'Windows':
+    from ctypes import POINTER, cast
+    from comtypes import CLSCTX_ALL
+    from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 
 def set_master_volume(volume):
-    devices = AudioUtilities.GetSpeakers()
-    interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-    volume_object = cast(interface, POINTER(IAudioEndpointVolume))
-    volume_object.SetMasterVolumeLevelScalar(volume, None)
+    if os == 'Linux':
+        try:
+            # Use amixer command to set the volume
+            subprocess.run(["amixer", "sset", "Master", str(volume)+"%"],
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError as e:
+            print("Failed to set volume:", e)
+
+    elif os == 'Windows':
+        devices = AudioUtilities.GetSpeakers()
+        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+        volume_object = cast(interface, POINTER(IAudioEndpointVolume))
+        volume_object.SetMasterVolumeLevelScalar(volume / 100, None)
+
+    else:
+        print(f"operating system {os} is not supported")
 
 
 volBar = 0
@@ -43,31 +62,30 @@ while True:
 
         length = math.hypot(lmList[8][1] - lmList[4][1],
                             lmList[8][2] - lmList[4][2])
-        print(length)
 
-        vol = np.interp(length, [25, 150], [0.0, 1])
+        vol = np.interp(length, [25, 150], [0.0, 100])
         volBar = np.interp(length, [25, 150], [400, 150])
         set_master_volume(vol)
 
-        if vol * 100 >= 60:
-            cv2.rectangle(vid, (50, int(volBar)), (85, 400), (0, 255, 0), -1)
-            cv2.rectangle(vid, (50, 150), (85, 400), (0, 255, 0), 2)
-            cv2.circle(vid, ((lmList[4][1] + lmList[8][1]) // 2,
-                             (lmList[4][2] + lmList[8][2]) // 2), 10, (0, 255, 0), -1)
-            cv2.putText(
-                vid, f'{str(int(vol * 100))}%',
-                (40, 430), cv2.FONT_HERSHEY_COMPLEX,
-                1, (0, 255, 0), 1)
-
-        elif 30 < vol * 100 < 60:
+        if vol >= 80:
             cv2.rectangle(vid, (50, int(volBar)), (85, 400), (0, 255, 255), -1)
             cv2.rectangle(vid, (50, 150), (85, 400), (0, 255, 255), 2)
             cv2.circle(vid, ((lmList[4][1] + lmList[8][1]) // 2,
                              (lmList[4][2] + lmList[8][2]) // 2), 10, (0, 255, 255), -1)
             cv2.putText(
-                vid, f'{str(int(vol * 100))}%',
+                vid, f'{str(int(vol))}%',
                 (40, 430), cv2.FONT_HERSHEY_COMPLEX,
                 1, (0, 255, 255), 1)
+
+        elif 30 < vol < 80:
+            cv2.rectangle(vid, (50, int(volBar)), (85, 400), (0, 255, 0), -1)
+            cv2.rectangle(vid, (50, 150), (85, 400), (0, 255, 0), 2)
+            cv2.circle(vid, ((lmList[4][1] + lmList[8][1]) // 2,
+                             (lmList[4][2] + lmList[8][2]) // 2), 10, (0, 255, 0), -1)
+            cv2.putText(
+                vid, f'{str(int(vol))}%',
+                (40, 430), cv2.FONT_HERSHEY_COMPLEX,
+                1, (0, 255, 0), 1)
 
         else:
             cv2.rectangle(vid, (50, int(volBar)), (85, 400), (0, 0, 255), -1)
@@ -75,7 +93,7 @@ while True:
             cv2.circle(vid, ((lmList[4][1] + lmList[8][1]) // 2,
                              (lmList[4][2] + lmList[8][2]) // 2), 10, (0, 0, 255), -1)
             cv2.putText(
-                vid, f'{str(int(vol * 100))}%',
+                vid, f'{str(int(vol))}%',
                 (40, 430), cv2.FONT_HERSHEY_COMPLEX,
                 1, (0, 0, 255), 1)
 

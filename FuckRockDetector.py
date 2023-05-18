@@ -38,6 +38,12 @@ while True:
                 frame, "FUCK Detected",
                 (int(lmList[0][1]) - 100, int(lmList[0][2]) - 50), cv2.FONT_HERSHEY_SIMPLEX,
                 1, (0, 0, 255), 2)
+        if total_fingers == 3 and (fingers[0] == 1 and fingers[1] == 1 and fingers[4] == 1):
+            cv2.putText(
+                frame, "ROCK",
+                (int(lmList[0][1]) - 20, int(lmList[0][2]) - 50), cv2.FONT_HERSHEY_SIMPLEX,
+                1, (150, 255, 255), 2)
+
 
     # FPS
     cTime = time.time()

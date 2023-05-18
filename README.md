@@ -28,9 +28,9 @@ The [HandVoumeControler](HandVoumeControler.py) application is an example applic
 
 <img src="sources/HandVolumeControl.jpg"  width="500" height="400" />
 
-## FuckDetector App
+## FuckRockDetector App
 
-The [FuckDetector](FuckDetector.py) application is annother example application that showcases the use of the [HandTrackingModule](modules%2FHandTrackingModule.py) module to detect fingers and alert if someone shows the camera a middle finger. It detects the hand, tracks the hand movement..
+The [FuckDetector](FuckRockDetector.py) application is annother example application that showcases the use of the [HandTrackingModule](modules%2FHandTrackingModule.py) module to detect fingers and alert if someone shows the camera a middle finger. It detects the hand, tracks the hand movement..
 
 <img src="sources/fuck_detection.png"  width="500" height="400" />
 
